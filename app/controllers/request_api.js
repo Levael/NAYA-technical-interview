@@ -4,8 +4,8 @@ const configs = require('../config.js');
 const api_url = configs.api_url;
 
 class RequestApi {
-    getUsers () {
-        return request({
+    async getUsers (callback) {
+        request({
             method: 'GET',
             url: api_url + '/users?page=2',
             headers: {'User-Agent': 'request', 'Content-type': 'json'}
@@ -14,14 +14,12 @@ class RequestApi {
                 console.log(err);
                 return 'error in get data from api';
             }
-
-
-            return(body);
+            callback(body);
         });
     }
 
-    addUser (user_data) {
-        return request({
+    async addUser (user_data, callback) {
+        request({
             method: 'POST',
             url: api_url + '/users',
             headers: {'User-Agent': 'request', 'Content-type': 'json'},
@@ -31,12 +29,12 @@ class RequestApi {
                 console.log(err);
                 return 'error in get data from api';
             }
-            return(body);
+            callback(body);
         });
     }
 
-    updateUser (user_id, user_upd_data) {
-        return request({
+    async updateUser (user_id, user_upd_data, callback) {
+        request({
             method: 'PUT',
             url: api_url + '/users/' + user_id,
             headers: {'User-Agent': 'request', 'Content-type': 'json'},
@@ -46,12 +44,12 @@ class RequestApi {
                 console.log(err);
                 return 'error in get data from api';
             }
-            return(body);
+            callback(body);
         });
     }
 
-    deleteUser (user_id) {
-        return request({
+    async deleteUser (user_id, callback) {
+        request({
             method: 'DELETE',
             url: api_url + '/users/' + user_id,
             headers: {'User-Agent': 'request', 'Content-type': 'json'}
@@ -61,12 +59,7 @@ class RequestApi {
                 return 'error in get data from api';
             }
 
-            // console.log(response.statusCode);
-
-            if (response.statusCode == 204) return(body);
-
-            console.log('u shoudnt see that');
-            return false;
+            if (response.statusCode == 204) callback(body);
         });
     }
 }

@@ -1,0 +1,7 @@
+use naya_task;
+db.createCollection("users");
+db.users.insertOne({
+    name: "test",
+    age: 120
+});
+db.users.find();
